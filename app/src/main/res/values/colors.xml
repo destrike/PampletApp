@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="apptheme_color">#f2b33e</color>
+    <color name="primaryColor">#292929</color>
+    <color name="primaryColorDark">#000000</color>
+    <color name="accentColor">#FFC107</color>
+    <color name="accentColorPurple">#5B437B</color>
+    <color name="accentColorGold">#F7B144</color>
+
+    <!--Dark Gray Theme-->
+    <color name="darkGrayLight">#2F2F2F</color>
+    <color name="darkGrayMedium">#292929</color>
+    <color name="darkGrayHeavy">#242424</color>
+    <color name="darkGrayDivider">#2D2D2D</color>
+
+    <!--Text and Labels-->
+    <color name="primaryTextColor">#FFFFFF</color>
+    <color name="secondaryTextColor">#F7B144</color>
+    <color name="tertiaryTextColor">#C0C0C0</color>
+    <color name="hintTextColor">#757575</color>
+
+
+</resources>
