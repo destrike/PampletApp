@@ -35,10 +35,10 @@
         </activity>
         <activity
             android:name=".activity.InterstitialsActivity"
-            android:label="@string/title_activity_interstitials"></activity>
-        <activity android:name=".activity.Pdftorun"></activity>
-        <activity android:name=".activity.Second"></activity>
-
+            android:label="@string/title_activity_interstitials" />
+        <activity android:name=".activity.Pdftorun" />
+        <activity android:name=".activity.Second" />
+        <activity android:name=".activity.Pdfrun2"></activity>
     </application>
 
 </manifest>

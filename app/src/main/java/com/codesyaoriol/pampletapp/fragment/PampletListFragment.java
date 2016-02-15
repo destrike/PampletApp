@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 
 import com.codesyaoriol.pampletapp.Singleton.Singleton;
+import com.codesyaoriol.pampletapp.activity.Pdfrun2;
 import com.codesyaoriol.pampletapp.activity.Pdftorun;
 import com.codesyaoriol.pampletapp.activity.Second;
 import com.codesyaoriol.pampletapp.core.BaseActivity;

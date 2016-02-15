@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 public class GResponseErrorListener implements Response.ErrorListener {
     @Override
     public void onErrorResponse(VolleyError volleyError) {
+        GDebug.logDebug("API_onErrorResponse", volleyError.toString());
 
     }
 }

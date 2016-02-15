@@ -5,8 +5,8 @@ package com.codesyaoriol.pampletapp.core;
  */
 public class GConfiguration {
 
-    public static String liveURL = "http://54.169.241.247/partyphile_staging/api/";
-    public static String testURL = "http://54.169.241.247/partyphile_staging/api/";
+    public static String liveURL = "http://52.24.133.167/api.thefeast/api/";
+    public static String testURL = "http://52.24.133.167/api.thefeast/api/";
 
 
     public static Boolean DEBUG = true;

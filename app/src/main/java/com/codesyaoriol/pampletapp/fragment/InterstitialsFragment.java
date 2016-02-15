@@ -52,7 +52,7 @@ public class InterstitialsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new requestDownloadFile().execute("");
+//        new requestDownloadFile().execute("");
 
         requestApiGetUserInfo();
 
@@ -108,6 +108,7 @@ public class InterstitialsFragment extends Fragment {
     public void requestApiGetUserInfo() {
 
         HashMap<String, String> params = new HashMap<>();
+//        params.put("id", "15");
 
         GRequest request = new GRequest(GRequest.kApiMethodGetUserInfo, params,
                 new GResponseListener() {
@@ -118,11 +119,15 @@ public class InterstitialsFragment extends Fragment {
                         try {
                             if (jsonObject.getInt("Status") == 200) {
 
-                                mImageUrl = jsonObject.getJSONObject("Data").getString("profile_pic");
+                                mImageUrl = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("path");
+//                                String mPdfUrl = mImageUrl.
 
-                                Log.i("profile", jsonObject.getJSONObject("Data").getString("first_name") + " " + jsonObject.getJSONObject("Data").getString("last_name"));
+                                Log.i("imageurl", mImageUrl);
 
-                                loadImage();
+                                new requestDownloadFile().execute("");
+//                                Log.i("profile", jsonObject.getJSONObject("Data").getString("first_name") + " " + jsonObject.getJSONObject("Data").getString("last_name"));
+
+//                                loadImage();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -181,7 +186,7 @@ public class InterstitialsFragment extends Fragment {
                     e1.printStackTrace();
                 }
                 Downloader.DownloadFile
-                        ("https://www.telestial.com/userguides/CPHN-LGN5.pdf", file);//Paste your url here
+                        ("http://"+mImageUrl, file);//Paste your url here
 
 
             } catch (Exception e) {
