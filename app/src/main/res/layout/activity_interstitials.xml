@@ -3,10 +3,26 @@
     android:layout_height="match_parent"
     tools:context="com.codesyaoriol.pampletapp.activity.InterstitialsActivity">
 
+
     <FrameLayout
         android:id="@+id/frame_layout_interstitials"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        >
+
+
+    </FrameLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar1"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="105dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -10,7 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -42,6 +45,8 @@ public class InterstitialsFragment extends Fragment {
 
     private ImageView mImageView;
     private String mImageUrl;
+    private ProgressBar spinner;
+
 
 
     public InterstitialsFragment() {
@@ -56,6 +61,11 @@ public class InterstitialsFragment extends Fragment {
 
         requestApiGetUserInfo();
 
+        // Find the progress bar
+
+
+
+
 
     }
 
@@ -65,6 +75,8 @@ public class InterstitialsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_interstitials, container, false);
+
+
 
 
         ImageView imgClose = (ImageView) view.findViewById(R.id.close);
@@ -80,6 +92,10 @@ public class InterstitialsFragment extends Fragment {
         });
 
         mImageView = (ImageView) view.findViewById(R.id.ad);
+
+        spinner = (ProgressBar) getActivity().findViewById(R.id.progressBar1);
+//        spinner.setVisibility(view.GONE);
+
 
 
         return view;
@@ -171,9 +187,25 @@ public class InterstitialsFragment extends Fragment {
     private class requestDownloadFile extends AsyncTask<String, Void, String> {
 
         String Filepath;
+        String PDFFile;
+
+
 
         @Override
         protected String doInBackground(String... params) {
+            File sdCardRoot = Environment.getExternalStorageDirectory();
+            File yourDir = new File(sdCardRoot, "IFIN-PDF");
+//            PDFFile = "ISFL-" + Date() + ".pdf";
+            File x = new File(yourDir, "ISFL-" + new Date().getTime()+".pdf");
+
+            if(x.exists()) {
+                Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
+//                getActivity().finish();
+//                Intent intent = new Intent(getActivity(), MainActivity.class);
+//                startActivity(intent);
+
+            }
+            else {
             try {
                 String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
                 File folder = new File(extStorageDirectory, "IFIN-PDF");
@@ -191,28 +223,27 @@ public class InterstitialsFragment extends Fragment {
 
             } catch (Exception e) {
             }
+            }
             return Filepath;
         }
+//
+//        private boolean resourcesDontAlreadyExist() {
+//            // Here you would query your app's internal state to see if this download had been performed before
+//            // Perhaps once checked save this in a shared preference for speed of access next time
+//            File sdCardRoot = Environment.getExternalStorageDirectory();
+//            File yourDir = new File(sdCardRoot, "IFIN-PDF");
+//
+//            return true; // returning true so we show the splash every time
+//        }
 
         @Override
         protected void onPostExecute(String result) {
 
-//            File file = new File(Environment.getExternalStorageDirectory()
-//                    + "/IFIN-PDF/" + result);
 
-//            PackageManager packageManager = getActivity().getPackageManager();
-//            Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-//            pdfIntent .setType("application/pdf");
-//            List list = packageManager.queryIntentActivities(pdfIntent ,
-//                    PackageManager.MATCH_DEFAULT_ONLY);
-////            Intent intent = new Intent();
-////            intent.setAction(Intent.ACTION_VIEW);
-//            Uri uri = Uri.fromFile(file);
-////            intent.setDataAndType(uri, "application/pdf");
-////            getActivity().startActivity(intent);
-//
-//            Log.i("downloaded", String.valueOf(uri));
 
+
+
+            spinner.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "Download Complete", Toast.LENGTH_SHORT).show();
 
 
@@ -221,12 +252,15 @@ public class InterstitialsFragment extends Fragment {
         @Override
         protected void onPreExecute() {
 
+            spinner.setVisibility(View.VISIBLE);
             Toast.makeText(getActivity(), "Download in progress", Toast.LENGTH_LONG).show();
 
 
         }
 
     }
+
+
 
 
 }

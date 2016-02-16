@@ -57,9 +57,10 @@ public class Pdftorun extends Activity {
     {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
+            finish();
             Intent gohome = new Intent (this, MainActivity.class);
             startActivity(gohome);
-            finish();
+
         }
         return super.onKeyDown(keyCode, event);
     }
