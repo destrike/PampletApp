@@ -22,6 +22,10 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/pdf" /> <!-- .pdf -->
+                <data android:mimeType="image/jpeg" /> <!-- .jpeg -->
+                <data android:mimeType="image/png" /> <!-- .png -->
+                <data android:mimeType="image/gif" /> <!-- .gif -->
             </intent-filter>
         </activity>
         <activity

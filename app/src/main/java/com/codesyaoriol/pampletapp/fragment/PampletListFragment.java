@@ -157,9 +157,11 @@ public class PampletListFragment extends Fragment {
         });
 
         mTrashImage.setOnClickListener(new View.OnClickListener() {
-            @Override
+           @Override
             public void onClick(View view) {
                 deleteFile();
+
+
             }
         });
 

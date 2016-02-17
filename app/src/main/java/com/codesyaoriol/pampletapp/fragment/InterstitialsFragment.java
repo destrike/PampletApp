@@ -49,6 +49,7 @@ public class InterstitialsFragment extends Fragment {
 
 
 
+
     public InterstitialsFragment() {
         // Required empty public constructor
     }
@@ -196,34 +197,34 @@ public class InterstitialsFragment extends Fragment {
             File sdCardRoot = Environment.getExternalStorageDirectory();
             File yourDir = new File(sdCardRoot, "IFIN-PDF");
 //            PDFFile = "ISFL-" + Date() + ".pdf";
-            File x = new File(yourDir, "ISFL-" + new Date().getTime()+".pdf");
+            File x = new File(yourDir, "ISFL-" + new Date().getDate());
 
-            if(x.exists()) {
-                Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
-//                getActivity().finish();
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                startActivity(intent);
 
-            }
-            else {
             try {
-                String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-                File folder = new File(extStorageDirectory, "IFIN-PDF");
-                folder.mkdir();
-                Filepath = "ISFL-" + new Date().getTime() + ".pdf";
-                File file = new File(folder, Filepath);
-                try {
-                    file.createNewFile();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                Downloader.DownloadFile
-                        ("http://"+mImageUrl, file);//Paste your url here
 
+                if(x.exists()) {
+                    Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
+                 }
+                else {
+                    String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+                    File folder = new File(extStorageDirectory, "IFIN-PDF");
+                    folder.mkdir();
+                    Filepath = "ISFL-" + new Date().getDate();
+                    File file = new File(folder, Filepath);
+
+                    try {
+                        file.createNewFile();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+
+                    Downloader.DownloadFile
+                            ("http://" + mImageUrl, file);//Paste your url here
+                }
 
             } catch (Exception e) {
             }
-            }
+
             return Filepath;
         }
 //
@@ -239,21 +240,48 @@ public class InterstitialsFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
 
+            File sdCardRoot = Environment.getExternalStorageDirectory();
+            File yourDir = new File(sdCardRoot, "IFIN-PDF");
+            File x = new File(yourDir, "ISFL-" + new Date().getDate());
 
+            if(x.exists()) {
+                spinner.setVisibility(View.GONE);
 
+                Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
 
+            }else {
+                spinner.setVisibility(View.GONE);
 
-            spinner.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), "Download Complete", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Download Complete", Toast.LENGTH_SHORT).show();
 
-
+            }
+            getActivity().finish();
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
         }
 
         @Override
         protected void onPreExecute() {
 
-            spinner.setVisibility(View.VISIBLE);
-            Toast.makeText(getActivity(), "Download in progress", Toast.LENGTH_LONG).show();
+            File sdCardRoot = Environment.getExternalStorageDirectory();
+            File yourDir = new File(sdCardRoot, "IFIN-PDF");
+            File x = new File(yourDir, "ISFL-" + new Date().getDate());
+
+
+            if(x.exists()) {
+                spinner.setVisibility(View.GONE);
+
+                Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
+
+            }else {
+                spinner.setVisibility(View.VISIBLE);
+
+                Toast.makeText(getActivity(), "Download in progress", Toast.LENGTH_LONG).show();
+
+            }
+
+
+
 
 
         }

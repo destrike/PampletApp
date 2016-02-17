@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">PampletApp</string>
+    <string name="app_name">The Feast</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="title_activity_splash_screen">The Feast</string>
     <string name="title_activity_interstitials">InterstitialsActivity</string>
     <string name="title_activity_second">InterstitialsActivity</string>
 

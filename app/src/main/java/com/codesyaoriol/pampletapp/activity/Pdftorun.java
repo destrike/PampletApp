@@ -33,6 +33,7 @@ public class Pdftorun extends Activity {
 
         File sdCardRoot = Environment.getExternalStorageDirectory();
         File yourDir = new File(sdCardRoot, "IFIN-PDF");
+
         String path = yourDir.getPath()+"/"+Singleton.getSelectedEvent();
         Intent intent = new Intent(this, Second.class);
         intent.putExtra(PdfViewerActivity.EXTRA_PDFFILENAME, path);
@@ -42,7 +43,13 @@ public class Pdftorun extends Activity {
         Log.i("path2", String.valueOf(path));
         try
         {
-            startActivity(intent);
+//            if(path.contains(".pdf")){
+                startActivity(intent);
+//            }
+//            else {
+//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(path))); /** replace with your own uri */
+
+//            }
         }
         catch (Exception e)
         {
@@ -50,8 +57,8 @@ public class Pdftorun extends Activity {
         }
 
 
-
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
