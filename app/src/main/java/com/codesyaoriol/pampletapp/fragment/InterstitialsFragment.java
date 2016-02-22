@@ -280,7 +280,7 @@ public class InterstitialsFragment extends Fragment {
                     String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
                     File folder = new File(extStorageDirectory, "IFIN-PDF");
                     folder.mkdir();
-                    Filepath = "TheFeast-" + mIsTitle+mIsExtension;
+                    Filepath = "The Feast-" + mIsTitle+mIsExtension;
                     File file = new File(folder, Filepath);
 
                     try {
@@ -340,7 +340,7 @@ public class InterstitialsFragment extends Fragment {
         @Override
         protected void onPreExecute() {
 
-            Filepath = "TheFeast-" + mIsTitle+mIsExtension;
+            Filepath = "The Feast-" + mIsTitle+mIsExtension;
 
             PDFFile = Filepath;
 
