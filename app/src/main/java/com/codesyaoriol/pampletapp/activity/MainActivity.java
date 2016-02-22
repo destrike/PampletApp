@@ -24,25 +24,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-        File folders = new File(extStorageDirectory, "IFIN-PDF");
-        File newt = new File(folders, "config.txt");
-        if (!newt.exists()) {
-        try {
 
-
-            String Filepath = "config" + ".txt";
-            File file = new File(folders, Filepath);
-
-            try {
-                file.createNewFile();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-
-        } catch (Exception e) {
-        }
-    }
 
 
         INSTANCE = this;

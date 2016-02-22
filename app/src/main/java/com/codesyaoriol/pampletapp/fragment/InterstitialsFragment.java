@@ -40,6 +40,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -54,8 +57,8 @@ public class InterstitialsFragment extends Fragment {
     private ProgressBar spinner;
 //    private static final String newt = "config.txt";
     private String mReadText;
-    private String misLatest;
-    private String misScheduled;
+    private String mIsLatest;
+    private String mIsScheduled;
 
 
 
@@ -146,12 +149,19 @@ public class InterstitialsFragment extends Fragment {
                         try {
                             if (jsonObject.getInt("Status") == 200) {
 
-                                mImageUrl = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("path");
-                                misLatest = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("isLatest");
-                                misScheduled = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("scheduleDate");
-                                String newDate = new Date().getYear()+"-"+new Date().getDay()+"-"+new Date().getMonth();
+                                Calendar c = Calendar.getInstance();
 
-                                if (misLatest!="1"&&misScheduled==newDate){
+
+                                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                                String newDate = df.format(c.getTime());
+                                // formattedDate have current date/time
+
+                                mImageUrl = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("path");
+                                mIsLatest = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("isLatest");
+                                mIsScheduled = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("scheduleDate");
+//                                String newDate = DateFormat.getDateTimeInstance().format(new Date());
+
+                                if (mIsLatest!="1"&&mIsScheduled==newDate){
 
                                     new requestDownloadFile().execute("");
 
@@ -167,7 +177,9 @@ public class InterstitialsFragment extends Fragment {
                                 }
 
                                 Log.i("imageurl", mImageUrl);
-                                Log.i("islatested", misLatest);
+                                Log.i("islatested", mIsLatest);
+                                Log.i("isschedules", mIsScheduled);
+                                Log.i("iscurrent", newDate);
 
 
 
