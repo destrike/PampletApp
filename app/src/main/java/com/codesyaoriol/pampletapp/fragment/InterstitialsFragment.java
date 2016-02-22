@@ -60,6 +60,7 @@ public class InterstitialsFragment extends Fragment {
     private String mIsLatest;
     private String mIsScheduled;
     private String mIsExtension;
+    private String mIsTitle;
 
 
 
@@ -160,6 +161,7 @@ public class InterstitialsFragment extends Fragment {
                                 mImageUrl = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("path");
                                 mIsLatest = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("isLatest");
                                 mIsScheduled = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("scheduleDate");
+                                mIsTitle = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("description");
 
                                 if (mImageUrl.contains(".pdf")){
                                     mIsExtension = ".pdf";
@@ -278,7 +280,7 @@ public class InterstitialsFragment extends Fragment {
                     String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
                     File folder = new File(extStorageDirectory, "IFIN-PDF");
                     folder.mkdir();
-                    Filepath = "ISFL-" + new Date().getDate()+mIsExtension;
+                    Filepath = "TheFeast-" + mIsTitle+mIsExtension;
                     File file = new File(folder, Filepath);
 
                     try {
@@ -338,7 +340,7 @@ public class InterstitialsFragment extends Fragment {
         @Override
         protected void onPreExecute() {
 
-            Filepath = "ISFL-" + new Date().getDate();
+            Filepath = "TheFeast-" + mIsTitle+mIsExtension;
 
             PDFFile = Filepath;
 
