@@ -1,6 +1,7 @@
 package com.codesyaoriol.pampletapp.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,10 +29,15 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
@@ -46,6 +52,10 @@ public class InterstitialsFragment extends Fragment {
     private ImageView mImageView;
     private String mImageUrl;
     private ProgressBar spinner;
+//    private static final String newt = "config.txt";
+    private String mReadText;
+    private String misLatest;
+    private String misScheduled;
 
 
 
@@ -137,14 +147,30 @@ public class InterstitialsFragment extends Fragment {
                             if (jsonObject.getInt("Status") == 200) {
 
                                 mImageUrl = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("path");
-//                                String mPdfUrl = mImageUrl.
+                                misLatest = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("isLatest");
+                                misScheduled = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("scheduleDate");
+                                String newDate = new Date().getYear()+"-"+new Date().getDay()+"-"+new Date().getMonth();
+
+                                if (misLatest!="1"&&misScheduled==newDate){
+
+                                    new requestDownloadFile().execute("");
+
+                                }else {
+
+                                    Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
+
+                                    getActivity().finish();
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    startActivity(intent);
+
+
+                                }
 
                                 Log.i("imageurl", mImageUrl);
+                                Log.i("islatested", misLatest);
 
-                                new requestDownloadFile().execute("");
-//                                Log.i("profile", jsonObject.getJSONObject("Data").getString("first_name") + " " + jsonObject.getJSONObject("Data").getString("last_name"));
 
-//                                loadImage();
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -189,23 +215,31 @@ public class InterstitialsFragment extends Fragment {
 
         String Filepath;
         String PDFFile;
+        int set = 0;
 
 
 
         @Override
         protected String doInBackground(String... params) {
-            File sdCardRoot = Environment.getExternalStorageDirectory();
-            File yourDir = new File(sdCardRoot, "IFIN-PDF");
-//            PDFFile = "ISFL-" + Date() + ".pdf";
-            File x = new File(yourDir, "ISFL-" + new Date().getDate());
+//            File sdCardRoot = Environment.getExternalStorageDirectory();
+//            File yourDir = new File(sdCardRoot, "IFIN-PDF");
+////            PDFFile = "ISFL-" + Date() + ".pdf";
+//            File x = new File(yourDir, "ISFL-" + new Date().getDate());
 
 
             try {
 
-                if(x.exists()) {
-                    Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
-                 }
-                else {
+//                if(yourDir.exists()) {
+//                    if(yourDir.delete()){
+//                        getActivity().finish();
+//                        Intent intent = new Intent(getActivity(), MainActivity.class);
+//                        startActivity(intent);
+//                    }
+//
+//                 }
+//                else {
+
+
                     String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
                     File folder = new File(extStorageDirectory, "IFIN-PDF");
                     folder.mkdir();
@@ -220,7 +254,9 @@ public class InterstitialsFragment extends Fragment {
 
                     Downloader.DownloadFile
                             ("http://" + mImageUrl, file);//Paste your url here
-                }
+
+
+//                }
 
             } catch (Exception e) {
             }
@@ -240,52 +276,168 @@ public class InterstitialsFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
 
-            File sdCardRoot = Environment.getExternalStorageDirectory();
-            File yourDir = new File(sdCardRoot, "IFIN-PDF");
-            File x = new File(yourDir, "ISFL-" + new Date().getDate());
+                if (set==1) {
 
-            if(x.exists()) {
-                spinner.setVisibility(View.GONE);
+                    spinner.setVisibility(View.GONE);
 
-                Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Download Complete", Toast.LENGTH_SHORT).show();
 
-            }else {
-                spinner.setVisibility(View.GONE);
+                    getActivity().finish();
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                }else {
 
-                Toast.makeText(getActivity(), "Download Complete", Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
 
-            }
-            getActivity().finish();
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
+
+                }
+
+
+
+
+
         }
 
         @Override
         protected void onPreExecute() {
 
-            File sdCardRoot = Environment.getExternalStorageDirectory();
-            File yourDir = new File(sdCardRoot, "IFIN-PDF");
-            File x = new File(yourDir, "ISFL-" + new Date().getDate());
+            Filepath = "ISFL-" + new Date().getDate();
+
+            PDFFile = Filepath;
+
+            Log.i("path2", String.valueOf(PDFFile));
+
+            String textFromFileString =  readFromFile();
 
 
-            if(x.exists()) {
-                spinner.setVisibility(View.GONE);
 
-                Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
+            if(mReadText!=null) {
 
-            }else {
-                spinner.setVisibility(View.VISIBLE);
 
-                Toast.makeText(getActivity(), "Download in progress", Toast.LENGTH_LONG).show();
+
+                if (mReadText.contains(PDFFile)) {
+                    spinner.setVisibility(View.GONE);
+
+
+                    Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    spinner.setVisibility(View.VISIBLE);
+
+                    set = 1;
+
+
+                    writeToFile(PDFFile);
+                    Log.i("mreadtext", mReadText);
+
+                    Toast.makeText(getActivity(), "Download in progress", Toast.LENGTH_LONG).show();
+
+                }
+
+            } else {
+
+                String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+                File folders = new File(extStorageDirectory, "IFIN-PDF");
+                File newt = new File(folders, "config.txt");
+                if (!newt.exists()) {
+                    try {
+
+
+                        String Filepath = "config" + ".txt";
+                        File file = new File(folders, Filepath);
+
+                        try {
+                            file.createNewFile();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+
+                    } catch (Exception e) {
+                    }
+                }
+
 
             }
 
 
 
 
-
         }
 
+    }
+//Write List
+    private void writeToFile(String data) {
+
+
+        String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+        File folder = new File(extStorageDirectory, "IFIN-PDF");
+        File file = new File(folder, "config.txt");
+
+
+
+        String newLine = "\r\n";
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+            outputStreamWriter.append(data + newLine);
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.i("logit", String.valueOf(file));
+
+
+        Log.i("writedata", data);
+
+    }
+
+    // Read List
+
+    private String readFromFile() {
+        String extStorageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
+        File folder = new File(extStorageDirectory, "IFIN-PDF");
+        File file = new File(folder, "config.txt");
+
+        Log.i("filepath", file.toString());
+
+
+        String ret = "";
+
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+//            InputStream inputStream = getActivity().openFileInput(file.toString());
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString).append("\n");
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+
+            Log.i("readFiles", ret);
+            mReadText = ret;
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        return ret;
     }
 
 

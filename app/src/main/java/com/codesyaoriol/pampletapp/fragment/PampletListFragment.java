@@ -162,6 +162,9 @@ public class PampletListFragment extends Fragment {
                 deleteFile();
 
 
+
+
+
             }
         });
 

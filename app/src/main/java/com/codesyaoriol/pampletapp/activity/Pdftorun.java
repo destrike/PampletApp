@@ -16,6 +16,7 @@ import com.codesyaoriol.pampletapp.fragment.PampletListFragment;
 import net.sf.andpdf.pdfviewer.PdfViewerActivity;
 
 import java.io.File;
+import org.apache.commons.io.FilenameUtils;
 import java.util.ArrayList;
 
 public class Pdftorun extends Activity {
@@ -35,16 +36,19 @@ public class Pdftorun extends Activity {
         File yourDir = new File(sdCardRoot, "IFIN-PDF");
 
         String path = yourDir.getPath()+"/"+Singleton.getSelectedEvent();
+        String extension = FilenameUtils.getExtension(path);
+        String paths = yourDir.getPath()+"/"+Singleton.getSelectedEvent()+extension;
         Intent intent = new Intent(this, Second.class);
         intent.putExtra(PdfViewerActivity.EXTRA_PDFFILENAME, path);
 
 
 
-        Log.i("path2", String.valueOf(path));
+        Log.i("path2", String.valueOf(paths));
         try
         {
 //            if(path.contains(".pdf")){
                 startActivity(intent);
+            finish();
 //            }
 //            else {
 //                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(path))); /** replace with your own uri */
