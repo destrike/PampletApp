@@ -2,11 +2,15 @@ package com.codesyaoriol.pampletapp.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.ImageView;
 
 
 import com.codesyaoriol.pampletapp.R;
@@ -22,6 +26,8 @@ import java.util.ArrayList;
 public class Pdftorun extends Activity {
 
     private String mOpenFile;
+    private ImageView mViewImage;
+    Bitmap bitmap = null;
 
 
 
@@ -36,25 +42,43 @@ public class Pdftorun extends Activity {
         File yourDir = new File(sdCardRoot, "IFIN-PDF");
 
         String path = yourDir.getPath()+"/"+Singleton.getSelectedEvent();
-        String extension = FilenameUtils.getExtension(path);
-        String paths = yourDir.getPath()+"/"+Singleton.getSelectedEvent()+extension;
+//        String paths = yourDir.getPath()+"/"+Singleton.getSelectedEvent();
         Intent intent = new Intent(this, Second.class);
         intent.putExtra(PdfViewerActivity.EXTRA_PDFFILENAME, path);
 
+        mViewImage = (ImageView)findViewById(R.id.imageView);
 
 
-        Log.i("path2", String.valueOf(paths));
+
+        Log.i("path2", String.valueOf(path));
         try
         {
-//            if(path.contains(".pdf")){
+            if(path.contains(".pdf")){
                 startActivity(intent);
             finish();
-//            }
-//            else {
-//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(path))); /** replace with your own uri */
+            }
+            else {
 
-//            }
-        }
+                File pathLink = new File(yourDir, Singleton.getSelectedEvent());
+                if (pathLink.isFile()) {
+                    MediaScannerConnection.scanFile(this, new String[]{
+                            pathLink.toString()}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                        @Override
+                        public void onScanCompleted(String path, Uri uri) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(uri, "image/*");
+                            startActivityForResult(intent, this.hashCode());
+                            finish();
+                        }
+                    });
+
+
+
+
+
+            }
+        }}
+
         catch (Exception e)
         {
             e.printStackTrace();

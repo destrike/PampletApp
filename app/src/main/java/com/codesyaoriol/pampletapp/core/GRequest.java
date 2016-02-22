@@ -17,7 +17,7 @@ import java.util.Map;
 public class GRequest {
 
     /* GET METHOD FROM API */
-    public static String kApiMethodGetUserInfo = "file/getLink/12";
+    public static String kApiMethodGetUserInfo = "file/getLink/13";
 
 
 
