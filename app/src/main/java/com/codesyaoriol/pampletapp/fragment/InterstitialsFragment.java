@@ -159,11 +159,26 @@ public class InterstitialsFragment extends Fragment {
                                 mImageUrl = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("path");
                                 mIsLatest = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("isLatest");
                                 mIsScheduled = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("scheduleDate");
-//                                String newDate = DateFormat.getDateTimeInstance().format(new Date());
 
-                                if (mIsLatest!="1"&&mIsScheduled==newDate){
 
-                                    new requestDownloadFile().execute("");
+                                if (mIsLatest.equals("1")){
+
+                                    if(mIsScheduled.equals(newDate)){
+
+
+                                        new requestDownloadFile().execute("");
+
+
+                                    }else {
+
+                                        Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
+
+                                        getActivity().finish();
+                                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                                        startActivity(intent);
+
+
+                                    }
 
                                 }else {
 
