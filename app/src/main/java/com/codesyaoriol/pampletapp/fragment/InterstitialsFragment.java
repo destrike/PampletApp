@@ -55,7 +55,6 @@ public class InterstitialsFragment extends Fragment {
     private ImageView mImageView;
     private String mImageUrl;
     private ProgressBar spinner;
-//    private static final String newt = "config.txt";
     private String mReadText;
     private String mIsLatest;
     private String mIsScheduled;
@@ -171,7 +170,7 @@ public class InterstitialsFragment extends Fragment {
                                     mIsExtension = ".png";
                                 }
 
-                                if (mIsLatest.equals("1")){
+                                if (mIsLatest.equals("0")){
 
                                     if(mIsScheduled.equals(newDate)){
 
@@ -258,23 +257,12 @@ public class InterstitialsFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-//            File sdCardRoot = Environment.getExternalStorageDirectory();
-//            File yourDir = new File(sdCardRoot, "IFIN-PDF");
-////            PDFFile = "ISFL-" + Date() + ".pdf";
-//            File x = new File(yourDir, "ISFL-" + new Date().getDate());
+
 
 
             try {
 
-//                if(yourDir.exists()) {
-//                    if(yourDir.delete()){
-//                        getActivity().finish();
-//                        Intent intent = new Intent(getActivity(), MainActivity.class);
-//                        startActivity(intent);
-//                    }
-//
-//                 }
-//                else {
+
 
 
                     String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
@@ -293,22 +281,14 @@ public class InterstitialsFragment extends Fragment {
                             ("http://" + mImageUrl, file);//Paste your url here
 
 
-//                }
+
 
             } catch (Exception e) {
             }
 
             return Filepath;
         }
-//
-//        private boolean resourcesDontAlreadyExist() {
-//            // Here you would query your app's internal state to see if this download had been performed before
-//            // Perhaps once checked save this in a shared preference for speed of access next time
-//            File sdCardRoot = Environment.getExternalStorageDirectory();
-//            File yourDir = new File(sdCardRoot, "IFIN-PDF");
-//
-//            return true; // returning true so we show the splash every time
-//        }
+
 
         @Override
         protected void onPostExecute(String result) {
@@ -376,7 +356,9 @@ public class InterstitialsFragment extends Fragment {
             } else {
 
                 String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-                File folders = new File(extStorageDirectory, "IFIN-PDF");
+                File refolders = new File(extStorageDirectory, "IFIN-PDF");
+                File folders = new File(refolders, "Config");
+                folders.mkdir();
                 File newt = new File(folders, "config.txt");
                 if (!newt.exists()) {
                     try {
@@ -409,7 +391,8 @@ public class InterstitialsFragment extends Fragment {
 
 
         String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-        File folder = new File(extStorageDirectory, "IFIN-PDF");
+        File refolder = new File(extStorageDirectory, "IFIN-PDF");
+        File folder = new File(refolder, "Config");
         File file = new File(folder, "config.txt");
 
 
@@ -439,7 +422,8 @@ public class InterstitialsFragment extends Fragment {
 
     private String readFromFile() {
         String extStorageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        File folder = new File(extStorageDirectory, "IFIN-PDF");
+        File refolder = new File(extStorageDirectory, "IFIN-PDF");
+        File folder = new File(refolder, "Config");
         File file = new File(folder, "config.txt");
 
         Log.i("filepath", file.toString());
