@@ -7,6 +7,8 @@ import com.android.volley.Request;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,8 +18,16 @@ import java.util.Map;
  */
 public class GRequest {
 
+    public static Calendar c = Calendar.getInstance();
+
+
+    public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    public static String dateNow = df.format(c.getTime());
+
     /* GET METHOD FROM API */
-    public static String kApiMethodGetUserInfo = "file/getLink/15";
+//    format 2016-12-21 date now
+
+    public static String kApiMethodGetUserInfo = "file/getLink/"+dateNow;
 
 
 

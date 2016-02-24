@@ -56,10 +56,13 @@ public class InterstitialsFragment extends Fragment {
     private String mImageUrl;
     private ProgressBar spinner;
     private String mReadText;
+    private String mReadText2;
     private String mIsLatest;
     private String mIsScheduled;
     private String mIsExtension;
     private String mIsTitle;
+    private String mIsDownloaded;
+    private int set;
 
 
 
@@ -157,10 +160,13 @@ public class InterstitialsFragment extends Fragment {
                                 String newDate = df.format(c.getTime());
                                 // formattedDate have current date/time
 
+
+
                                 mImageUrl = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("path");
                                 mIsLatest = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("isLatest");
                                 mIsScheduled = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("scheduleDate");
                                 mIsTitle = jsonObject.getJSONObject("Data").getJSONObject("pdf").getString("description");
+
 
                                 if (mImageUrl.contains(".pdf")){
                                     mIsExtension = ".pdf";
@@ -171,55 +177,12 @@ public class InterstitialsFragment extends Fragment {
                                 }
 
 
-//                                if (mIsLatest.equals("0")) {
-//                                  if(mReadText!=null) {
+
+
+//                                if (mIsLatest.equals("0")){
 //
-//                                    String Filename = "The Feast-" + mIsTitle+mIsExtension;
-//                                      String textFromFileString =  readFromFile();
-//
-//
-//
-//                                    if (textFromFileString.contains(Filename)) {
-//
-//                                        spinner.setVisibility(View.GONE);
-//                                        Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
-//                                        goToMain();
-//
-//                                    } else {
 //
 //                                        new requestDownloadFile().execute("");
-//
-//                                    }
-//
-//                                } else {
-//
-//                                    String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-//                                    File refolders = new File(extStorageDirectory, "IFIN-PDF");
-//                                    File folders = new File(refolders, "Config");
-//                                    folders.mkdir();
-//                                    File newt = new File(folders, "config.txt");
-//                                    if (!newt.exists()) {
-//                                        try {
-//
-//
-//                                            String Filepath = "config" + ".txt";
-//                                            File file = new File(folders, Filepath);
-//
-//                                            try {
-//                                                file.createNewFile();
-//                                            } catch (IOException e1) {
-//                                                e1.printStackTrace();
-//                                            }
-//
-//                                        } catch (Exception e) {
-//                                        }
-//                                    }
-//
-//                                      new requestDownloadFile().execute("");
-//
-//
-//                                }
-//
 //
 //
 //
@@ -228,95 +191,27 @@ public class InterstitialsFragment extends Fragment {
 //
 //                                    Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
 //
-//                                    getActivity().finish();
-//                                    Intent intent = new Intent(getActivity(), MainActivity.class);
-//                                    startActivity(intent);
+//                                    goToMain();
 //
 //
 //                                }
 
-                                if (mIsLatest.equals("0")){
 
-//                                    if(mIsScheduled.equals(newDate)){
-
-
-                                        new requestDownloadFile().execute("");
-
-
-//                                    }else {
-//
-//                                        Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
-//
-//                                        getActivity().finish();
-//                                        Intent intent = new Intent(getActivity(), MainActivity.class);
-//                                        startActivity(intent);
-//
-//
-//                                    }
-
+                                if(mIsScheduled == newDate && mIsLatest.equals("1"))
+                                {
+                                    new requestDownloadFile().execute("");
+                                    set=0;
+                                }
+                                else if((mIsScheduled!=newDate && mIsLatest.equals("0")))
+                                {
+                                    new requestDownloadFile().execute("");
+                                    set=0;
                                 }else {
-
-                                    Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
-
                                     goToMain();
-
-
                                 }
 
-//                                if(mReadText!=null) {
-//
-//                                    String Filename = "The Feast-" + mIsTitle+mIsExtension;
-//
-//
-//
-//                                    if (mReadText.contains(Filename)) {
-//                                        spinner.setVisibility(View.GONE);
-//
-//
-//
-//
-//                                        Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
-//                                        goToMain();
-//
-//                                    } else {
-//
-//                                        new requestDownloadFile().execute("");
-//                                        spinner.setVisibility(View.VISIBLE);
-//
-//
-//                                        writeToFile(Filename);
-//                                        Log.i("mreadtext", mReadText);
-//
-//                                        Toast.makeText(getActivity(), "Download in progress", Toast.LENGTH_LONG).show();
-//
-//                                    }
-//
-//                                } else {
-//
-//                                    String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-//                                    File refolders = new File(extStorageDirectory, "IFIN-PDF");
-//                                    File folders = new File(refolders, "Config");
-//                                    folders.mkdir();
-//                                    File newt = new File(folders, "config.txt");
-//                                    if (!newt.exists()) {
-//                                        try {
-//
-//
-//                                            String Filepath = "config" + ".txt";
-//                                            File file = new File(folders, Filepath);
-//
-//                                            try {
-//                                                file.createNewFile();
-//                                            } catch (IOException e1) {
-//                                                e1.printStackTrace();
-//                                            }
-//
-//                                        } catch (Exception e) {
-//                                        }
-//                                    }
-//
-//
-//                                }
+
+
 
 
                                 Log.i("imageurl", mImageUrl);
@@ -324,9 +219,13 @@ public class InterstitialsFragment extends Fragment {
                                 Log.i("isschedules", mIsScheduled);
                                 Log.i("iscurrent", newDate);
 
-//                                new requestDownloadFile().execute("");
 
 
+
+                            }else if(jsonObject.getInt("Status") == 400){
+
+                                Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
+                                goToMain();
 
                             }
                         } catch (JSONException e) {
@@ -372,7 +271,7 @@ public class InterstitialsFragment extends Fragment {
 
         String Filepath;
         String PDFFile;
-        int set = 0;
+
 
 
 
@@ -447,7 +346,6 @@ public class InterstitialsFragment extends Fragment {
                 String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
                 File folder = new File(extStorageDirectory, "IFIN-PDF");
 //                folder.mkdir();
-                Filepath = "The Feast-" + mIsTitle+mIsExtension;
                 File file = new File(folder, Filepath);
 
                 try {
@@ -472,69 +370,6 @@ public class InterstitialsFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
 
-            Filepath = "The Feast-" + mIsTitle+mIsExtension;
-
-            PDFFile = Filepath;
-
-            Log.i("path2", String.valueOf(PDFFile));
-
-            String textFromFileString =  readFromFile();
-
-
-
-            if(mReadText!=null) {
-
-
-
-                if (mReadText.contains(PDFFile)) {
-                    spinner.setVisibility(View.GONE);
-
-
-                    Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    spinner.setVisibility(View.VISIBLE);
-
-                    set = 1;
-
-
-                    writeToFile(PDFFile);
-                    Log.i("mreadtext", mReadText);
-
-                    Toast.makeText(getActivity(), "Download in progress", Toast.LENGTH_LONG).show();
-
-                }
-
-            } else {
-
-                String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-                File refolders = new File(extStorageDirectory, "IFIN-PDF");
-                File folders = new File(refolders, "Config");
-                folders.mkdir();
-                File newt = new File(folders, "config.txt");
-                if (!newt.exists()) {
-                    try {
-
-
-                        String Filepath = "config" + ".txt";
-                        File file = new File(folders, Filepath);
-
-                        try {
-                            file.createNewFile();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-
-                    } catch (Exception e) {
-                    }
-                }
-
-
-
-            }
-
-
-
 
 
 
@@ -544,14 +379,10 @@ public class InterstitialsFragment extends Fragment {
 
                 Toast.makeText(getActivity(), "Download Complete", Toast.LENGTH_SHORT).show();
 
-                getActivity().finish();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+               goToMain();
             }else {
 
-                getActivity().finish();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+                goToMain();
 
 
             }
@@ -565,66 +396,17 @@ public class InterstitialsFragment extends Fragment {
         @Override
         protected void onPreExecute() {
 
-            Filepath = "The Feast-" + mIsTitle+mIsExtension;
 
-            PDFFile = Filepath;
+            if (set==0) {
 
-            Log.i("path2", String.valueOf(PDFFile));
+                spinner.setVisibility(View.VISIBLE);
 
-            String textFromFileString =  readFromFile();
-
-
-
-            if(mReadText!=null) {
-
-
-
-                if (mReadText.contains(PDFFile)) {
-                    spinner.setVisibility(View.GONE);
-
-
-                    Toast.makeText(getActivity(), "No New Download", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    spinner.setVisibility(View.VISIBLE);
-
-                    set = 1;
-
-
-                    writeToFile(PDFFile);
-                    Log.i("mreadtext", mReadText);
-
-                    Toast.makeText(getActivity(), "Download in progress", Toast.LENGTH_LONG).show();
-
-                }
-
-            } else {
-
-                String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-                File refolders = new File(extStorageDirectory, "IFIN-PDF");
-                File folders = new File(refolders, "Config");
-                folders.mkdir();
-                File newt = new File(folders, "config.txt");
-                if (!newt.exists()) {
-                    try {
-
-
-                        String Filepath = "config" + ".txt";
-                        File file = new File(folders, Filepath);
-
-                        try {
-                            file.createNewFile();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-
-                    } catch (Exception e) {
-                    }
-                }
-
+//                Toast.makeText(getActivity(), "Download in Progress", Toast.LENGTH_SHORT).show();
 
 
             }
+
+
 
 
 
@@ -671,6 +453,8 @@ public class InterstitialsFragment extends Fragment {
 
     }
 
+
+
     // Read List
 
     private String readFromFile() {
@@ -713,6 +497,8 @@ public class InterstitialsFragment extends Fragment {
 
         return ret;
     }
+
+
 
 
 
